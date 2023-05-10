@@ -1,0 +1,10 @@
+name: 'Deployed Commit Writer Action'
+description: 'Automatically create a file containing the currently deployed commit'
+inputs:
+  destinationFileName:
+    description: "Name of the file containing metadata of commit"
+    required: false
+    default: "COMMIT_INFO"
+runs:
+  using: "node16"
+  main: "dist/index.js"
