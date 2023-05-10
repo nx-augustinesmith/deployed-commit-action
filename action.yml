@@ -1,7 +1,10 @@
 name: 'Deployed Commit Writer Action'
 description: 'Automatically create a file containing the currently deployed commit'
 inputs:
-  destinationFileName:
+  GITHUB_TOKEN:
+    description: "Github Token"
+    required: true
+  DESTINATION_FILE_NAME:
     description: "Name of the file containing metadata of commit"
     required: false
     default: "COMMIT_INFO"
