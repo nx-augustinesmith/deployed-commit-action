@@ -9652,6 +9652,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
+const fs = __importStar(__nccwpck_require__(7147));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -9659,9 +9660,52 @@ function run() {
             const octokit = github.getOctokit(GITHUB_TOKEN);
             const sha = process.env.GITHUB_SHA;
             const message = process.env.GITHUB_MESSAGE;
-            const author = process.env.GITHUB_ACTOR;
+            const author = "nx-augustinesmith";
             const commitInfo = `Commit: ${sha}\nAuthor: ${author}\nMessage: ${message}\n`;
             console.log(commitInfo);
+            fs.writeFileSync("COMMIT_INFO", commitInfo);
+            const repo = github.context.repo;
+            const branch = github.context.ref.replace("refs/heads/", "");
+            yield octokit.rest.git.createBlob({
+                owner: repo.owner,
+                repo: repo.repo,
+                content: commitInfo,
+                encoding: "utf-8",
+            });
+            const tree = yield octokit.rest.git.getTree({
+                owner: repo.owner,
+                repo: repo.repo,
+                tree_sha: `${sha}^{tree}`,
+            });
+            const treeData = {
+                path: "COMMIT_INFO",
+                mode: "100644",
+                type: "blob",
+                sha: `${sha}^{blob}`,
+            };
+            const newTree = yield octokit.rest.git.createTree({
+                owner: repo.owner,
+                repo: repo.repo,
+                tree: tree.data.tree.concat(treeData),
+            });
+            const newCommit = yield octokit.rest.git.createCommit({
+                owner: repo.owner,
+                repo: repo.repo,
+                message: "Add COMMIT_INFO",
+                tree: newTree.data.sha,
+                parents: [sha],
+                author: {
+                    name: author,
+                    email: "nx-augustinesmith@nexum.com",
+                    date: new Date().toISOString(),
+                },
+            });
+            yield octokit.rest.git.updateRef({
+                owner: repo.owner,
+                repo: repo.repo,
+                ref: `heads/${branch}`,
+                sha: newCommit.data.sha,
+            });
             core.setOutput("commit-info", commitInfo);
         }
         catch (error) {
