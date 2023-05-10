@@ -1,10 +1,22 @@
-import core from '@actions/core';
-import github from '@actions/github';
+import core from "@actions/core";
+import github from "@actions/github";
 
 async function run() {
-    const GITHUB_TOKEN = core.getInput('GITHUB_TOKEN');
+  try {
+    const GITHUB_TOKEN = core.getInput("GITHUB_TOKEN");
     const octokit = github.getOctokit(GITHUB_TOKEN);
-    console.log("Running");
+    const sha = process.env.GITHUB_SHA;
+    const message = process.env.GITHUB_MESSAGE;
+    const author = process.env.GITHUB_ACTOR;
+
+    const commitInfo = `Commit: ${sha}\nAuthor: ${author}\nMessage: ${message}\n`;
+    console.log(commitInfo);
+    core.setOutput("commit-info", commitInfo);
+  } catch (error) {
+    if (error instanceof Error) {
+      core.setFailed(error.message);
+    }
+  }
 }
 
 run();
