@@ -26,7 +26,7 @@ async function run() {
     console.log(commitInfo);
 
     await octokit.createOrUpdateTextFile({
-      owner: "nx-augustinesmith",
+      owner: COMMITTER,
       repo: "deployed-commit-action",
       path: "COMMIT_INFO",
       message: "Updated COMMIT_INFO",

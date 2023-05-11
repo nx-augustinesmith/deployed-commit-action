@@ -10041,7 +10041,7 @@ function run() {
             const commitInfo = `Commit: ${sha}\nAuthor: ${author}\nMessage: ${message}\n`;
             console.log(commitInfo);
             yield octokit.createOrUpdateTextFile({
-                owner: "nx-augustinesmith",
+                owner: COMMITTER,
                 repo: "deployed-commit-action",
                 path: "COMMIT_INFO",
                 message: "Updated COMMIT_INFO",
