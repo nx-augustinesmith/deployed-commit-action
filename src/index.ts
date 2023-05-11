@@ -51,6 +51,12 @@ async function run() {
       message: COMMIT_MESSAGE,
     });
 
+    console.log(commitInfo);
+    
+    const allAffectedProjects = [
+      ...(await getAffectedProjects("libs"), HEAD, BASE),
+      ...(await getAffectedProjects("apps"), HEAD, BASE),
+    ];
     await octokit.createOrUpdateTextFile({
       owner: COMMITTER,
       repo: github.context.repo.repo,
@@ -58,12 +64,7 @@ async function run() {
       message: `Updated ${DESTINATION_FILE_PATH}`,
       content: () => commitInfo,
     });
-
-    const allAffectedProjects = [
-      ...(await getAffectedProjects("libs"), HEAD, BASE),
-      ...(await getAffectedProjects("apps"), HEAD, BASE),
-    ];
-
+    
     console.log(allAffectedProjects);
 
     core.setOutput("commit-info", commitInfo);

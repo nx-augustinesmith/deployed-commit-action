@@ -13877,6 +13877,11 @@ function run() {
                 committer: COMMITTER,
                 message: COMMIT_MESSAGE,
             });
+            console.log(commitInfo);
+            const allAffectedProjects = [
+                ...(yield getAffectedProjects("libs"), HEAD, BASE),
+                ...(yield getAffectedProjects("apps"), HEAD, BASE),
+            ];
             yield octokit.createOrUpdateTextFile({
                 owner: COMMITTER,
                 repo: github.context.repo.repo,
@@ -13884,10 +13889,6 @@ function run() {
                 message: `Updated ${DESTINATION_FILE_PATH}`,
                 content: () => commitInfo,
             });
-            const allAffectedProjects = [
-                ...(yield getAffectedProjects("libs"), HEAD, BASE),
-                ...(yield getAffectedProjects("apps"), HEAD, BASE),
-            ];
             console.log(allAffectedProjects);
             core.setOutput("commit-info", commitInfo);
         }
