@@ -13854,6 +13854,7 @@ function getAffectedProjects(project_type, base, head) {
         });
         core.info(affectedResult.stdout);
         core.info(affectedResult.stderr);
+        console.log("Affected result error", affectedResult.stderr);
         return affectedResult.stdout;
     });
 }
