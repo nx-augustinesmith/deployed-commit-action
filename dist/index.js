@@ -13853,6 +13853,7 @@ function getAffectedProjects(project_type, base, head) {
             silent: true,
         });
         core.info(affectedResult.stdout);
+        core.info(affectedResult.stderr);
         return affectedResult.stdout;
     });
 }
