@@ -21,7 +21,7 @@ async function getAffectedProjects(
   const affectedCommand = `npx nx affected:${project_type}`;
   core.info(`${affectedCommand} ${commandArgs.join(" ")}`);
   const affectedResult = await getExecOutput(affectedCommand, commandArgs, {
-    silent: true,
+    silent: false,
   });
   core.info(affectedResult.stdout);
   core.info(affectedResult.stderr);

@@ -13850,7 +13850,7 @@ function getAffectedProjects(project_type, base, head) {
         const affectedCommand = `npx nx affected:${project_type}`;
         core.info(`${affectedCommand} ${commandArgs.join(" ")}`);
         const affectedResult = yield (0, exec_1.getExecOutput)(affectedCommand, commandArgs, {
-            silent: true,
+            silent: false,
         });
         core.info(affectedResult.stdout);
         core.info(affectedResult.stderr);
