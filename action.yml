@@ -4,7 +4,7 @@ inputs:
   GITHUB_TOKEN:
     description: "Github Token"
     required: true
-  DESTINATION_FILE_NAME:
+  DESTINATION_FILE_PATH:
     description: "Name of the file containing metadata of commit"
     required: false
     default: "COMMIT_INFO"
@@ -13,6 +13,9 @@ inputs:
     required: true
   COMMITTER:
     description: "Commit user"
+    required: true
+  REPO:
+    description: "Name of repo"
     required: true
 runs:
   using: "node16"

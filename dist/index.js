@@ -10029,6 +10029,8 @@ function run() {
             const GITHUB_TOKEN = core.getInput("GITHUB_TOKEN");
             const COMMITTER = core.getInput("COMMITTER");
             const COMMIT_MESSAGE = core.getInput("COMMIT_MESSAGE");
+            const DESTINATION_FILE_PATH = core.getInput("DESTINATION_FILE_PATH");
+            const REPO = core.getInput("REPO");
             const EnhancedOctokit = rest_1.Octokit.plugin(plugin_create_or_update_text_file_1.createOrUpdateTextFile).defaults({
                 userAgent: "Nx-Igus",
             });
@@ -10036,18 +10038,17 @@ function run() {
                 auth: GITHUB_TOKEN,
             });
             const sha = process.env.GITHUB_SHA;
-            const message = COMMIT_MESSAGE;
-            const author = COMMITTER;
-            const commitInfo = `Commit: ${sha}\nAuthor: ${author}\nMessage: ${message}\n`;
-            console.log(commitInfo);
+            const commitInfo = JSON.stringify({
+                sha,
+                committer: COMMITTER,
+                message: COMMIT_MESSAGE,
+            });
             yield octokit.createOrUpdateTextFile({
                 owner: COMMITTER,
-                repo: "deployed-commit-action",
-                path: "src/COMMIT_INFO",
-                message: "Updated COMMIT_INFO",
-                content: ({ content }) => {
-                    return commitInfo;
-                },
+                repo: REPO,
+                path: DESTINATION_FILE_PATH,
+                message: `Updated ${DESTINATION_FILE_PATH}`,
+                content: () => commitInfo,
             });
             core.setOutput("commit-info", commitInfo);
         }

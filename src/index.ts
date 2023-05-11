@@ -1,6 +1,4 @@
 import * as core from "@actions/core";
-import * as github from "@actions/github";
-import * as fs from "fs";
 import { Octokit } from "@octokit/rest";
 import { createOrUpdateTextFile } from "@octokit/plugin-create-or-update-text-file";
 
@@ -9,6 +7,8 @@ async function run() {
     const GITHUB_TOKEN = core.getInput("GITHUB_TOKEN");
     const COMMITTER = core.getInput("COMMITTER");
     const COMMIT_MESSAGE = core.getInput("COMMIT_MESSAGE");
+    const DESTINATION_FILE_PATH = core.getInput("DESTINATION_FILE_PATH");
+    const REPO = core.getInput("REPO");
 
     const EnhancedOctokit = Octokit.plugin(createOrUpdateTextFile).defaults({
       userAgent: "Nx-Igus",
@@ -19,20 +19,18 @@ async function run() {
     });
 
     const sha = process.env.GITHUB_SHA as string;
-    const message = COMMIT_MESSAGE;
-    const author = COMMITTER;
-
-    const commitInfo = `Commit: ${sha}\nAuthor: ${author}\nMessage: ${message}\n`;
-    console.log(commitInfo);
+    const commitInfo = JSON.stringify({
+      sha,
+      committer: COMMITTER,
+      message: COMMIT_MESSAGE,
+    });
 
     await octokit.createOrUpdateTextFile({
       owner: COMMITTER,
-      repo: "deployed-commit-action",
-      path: "src/COMMIT_INFO",
-      message: "Updated COMMIT_INFO",
-      content: ({ content }) => {
-        return commitInfo;
-      },
+      repo: REPO,
+      path: DESTINATION_FILE_PATH,
+      message: `Updated ${DESTINATION_FILE_PATH}`,
+      content: () => commitInfo,
     });
     core.setOutput("commit-info", commitInfo);
   } catch (error) {
