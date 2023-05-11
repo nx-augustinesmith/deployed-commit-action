@@ -16,4 +16,3 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           COMMIT_MESSAGE: ${{ github.event.commits[0].message }}
           COMMITTER: ${{ github.event.commits[0].author.username }}
-          REPO: ${{ github.repository }}

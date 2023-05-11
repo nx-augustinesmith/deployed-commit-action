@@ -14,9 +14,6 @@ inputs:
   COMMITTER:
     description: "Commit user"
     required: true
-  REPO:
-    description: "Name of repo"
-    required: true
 runs:
   using: "node16"
   main: "dist/index.js"

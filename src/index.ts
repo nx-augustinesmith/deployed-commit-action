@@ -1,4 +1,5 @@
 import * as core from "@actions/core";
+import * as github from "@actions/github"
 import { Octokit } from "@octokit/rest";
 import { createOrUpdateTextFile } from "@octokit/plugin-create-or-update-text-file";
 
@@ -8,7 +9,6 @@ async function run() {
     const COMMITTER = core.getInput("COMMITTER");
     const COMMIT_MESSAGE = core.getInput("COMMIT_MESSAGE");
     const DESTINATION_FILE_PATH = core.getInput("DESTINATION_FILE_PATH");
-    const REPO = core.getInput("REPO");
 
     const EnhancedOctokit = Octokit.plugin(createOrUpdateTextFile).defaults({
       userAgent: "Nx-Igus",
@@ -27,7 +27,7 @@ async function run() {
 
     await octokit.createOrUpdateTextFile({
       owner: COMMITTER,
-      repo: REPO,
+      repo: github.context.repo.repo,
       path: DESTINATION_FILE_PATH,
       message: `Updated ${DESTINATION_FILE_PATH}`,
       content: () => commitInfo,
