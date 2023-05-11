@@ -54,8 +54,8 @@ async function run() {
     console.log(commitInfo);
     
     const allAffectedProjects = [
-      ...(await getAffectedProjects("libs"), HEAD, BASE),
-      ...(await getAffectedProjects("apps"), HEAD, BASE),
+      ...(await getAffectedProjects("libs", HEAD, BASE)),
+      ...(await getAffectedProjects("apps", HEAD, BASE)),
     ];
     await octokit.createOrUpdateTextFile({
       owner: COMMITTER,
