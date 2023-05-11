@@ -10027,19 +10027,20 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const GITHUB_TOKEN = core.getInput("GITHUB_TOKEN");
+            const COMMITTER = core.getInput("committer");
             const EnhancedOctokit = rest_1.Octokit.plugin(plugin_create_or_update_text_file_1.createOrUpdateTextFile).defaults({
                 userAgent: "Nx-Igus",
             });
             const octokit = new EnhancedOctokit({
                 auth: GITHUB_TOKEN,
             });
-            const sha = process.env.GITHUB_SHA;
-            const message = process.env.GITHUB_MESSAGE;
-            const author = "nx-augustinesmith";
+            const sha = process.env.GITHUB_SHA || "";
+            const message = process.env.GITHUB_MESSAGE || "";
+            const author = COMMITTER;
             const commitInfo = `Commit: ${sha}\nAuthor: ${author}\nMessage: ${message}\n`;
             console.log(commitInfo);
             yield octokit.createOrUpdateTextFile({
-                owner: "nx-augustinesmith",
+                owner: COMMITTER,
                 repo: "deployed-commit-action",
                 path: "src/COMMIT_INFO",
                 message: "Updated COMMIT_INFO",
