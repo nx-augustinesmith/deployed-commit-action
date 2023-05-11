@@ -6,8 +6,8 @@ import { getExecOutput } from "@actions/exec";
 
 async function getAffectedProjects(
   project_type: "libs" | "apps",
+  head?: string,
   base?: string,
-  head?: string
 ) {
   const commandArgs = ["--plain"];
 

@@ -13838,7 +13838,7 @@ const github = __importStar(__nccwpck_require__(5438));
 const rest_1 = __nccwpck_require__(5375);
 const plugin_create_or_update_text_file_1 = __nccwpck_require__(8898);
 const exec_1 = __nccwpck_require__(1514);
-function getAffectedProjects(project_type, base, head) {
+function getAffectedProjects(project_type, head, base) {
     return __awaiter(this, void 0, void 0, function* () {
         const commandArgs = ["--plain"];
         if (base) {
