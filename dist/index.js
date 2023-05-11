@@ -13840,14 +13840,14 @@ const plugin_create_or_update_text_file_1 = __nccwpck_require__(8898);
 const exec_1 = __nccwpck_require__(1514);
 function getAffectedProjects(project_type, head, base) {
     return __awaiter(this, void 0, void 0, function* () {
-        const commandArgs = ["--plain"];
+        const commandArgs = [];
         if (base) {
             commandArgs.push("--base", base);
         }
         if (head) {
             commandArgs.push("--head", head);
         }
-        const affectedCommand = `npx nx affected:${project_type}`;
+        const affectedCommand = `npx nx print-affected --${project_type}`;
         core.info(`${affectedCommand} ${commandArgs.join(" ")}`);
         const affectedResult = yield (0, exec_1.getExecOutput)(affectedCommand, commandArgs, {
             silent: false,

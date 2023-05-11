@@ -9,7 +9,7 @@ async function getAffectedProjects(
   head?: string,
   base?: string,
 ) {
-  const commandArgs = ["--plain"];
+  const commandArgs = [];
 
   if (base) {
     commandArgs.push("--base", base);
@@ -18,7 +18,7 @@ async function getAffectedProjects(
     commandArgs.push("--head", head);
   }
 
-  const affectedCommand = `npx nx affected:${project_type}`;
+  const affectedCommand = `npx nx print-affected --${project_type}`;
   core.info(`${affectedCommand} ${commandArgs.join(" ")}`);
   const affectedResult = await getExecOutput(affectedCommand, commandArgs, {
     silent: false,
