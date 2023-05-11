@@ -8,6 +8,12 @@ inputs:
     description: "Name of the file containing metadata of commit"
     required: false
     default: "COMMIT_INFO"
+  COMMIT_MESSAGE:
+    description: "Commit message"
+    required: true
+  COMMITTER:
+    description: "Commit user"
+    required: true
 runs:
   using: "node16"
   main: "dist/index.js"

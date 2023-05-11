@@ -7,7 +7,8 @@ import { createOrUpdateTextFile } from "@octokit/plugin-create-or-update-text-fi
 async function run() {
   try {
     const GITHUB_TOKEN = core.getInput("GITHUB_TOKEN");
-    const COMMITTER = core.getInput("committer");
+    const COMMITTER = core.getInput("COMMITTER");
+    const COMMIT_MESSAGE = core.getInput("COMMIT_MESSAGE");
 
     const EnhancedOctokit = Octokit.plugin(createOrUpdateTextFile).defaults({
       userAgent: "Nx-Igus",
@@ -17,8 +18,8 @@ async function run() {
       auth: GITHUB_TOKEN,
     });
 
-    const sha = (process.env.GITHUB_SHA as string) || "";
-    const message = (process.env.GITHUB_MESSAGE as string) || "";
+    const sha = process.env.GITHUB_SHA as string;
+    const message = COMMIT_MESSAGE;
     const author = COMMITTER;
 
     const commitInfo = `Commit: ${sha}\nAuthor: ${author}\nMessage: ${message}\n`;
