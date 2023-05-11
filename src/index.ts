@@ -1,7 +1,31 @@
 import * as core from "@actions/core";
-import * as github from "@actions/github"
+import * as github from "@actions/github";
 import { Octokit } from "@octokit/rest";
 import { createOrUpdateTextFile } from "@octokit/plugin-create-or-update-text-file";
+import { getExecOutput } from "@actions/exec";
+
+async function getAffectedProjects(
+  project_type: "libs" | "apps",
+  base?: string,
+  head?: string
+) {
+  const commandArgs = ["--plain"];
+
+  if (base) {
+    commandArgs.push("--base", base);
+  }
+  if (head) {
+    commandArgs.push("--head", head);
+  }
+
+  const affectedCommand = `npx nx affected:${project_type}`;
+  core.info(`${affectedCommand} ${commandArgs.join(" ")}`);
+  const affectedResult = await getExecOutput(affectedCommand, commandArgs, {
+    silent: true,
+  });
+  core.info(affectedResult.stdout);
+  return affectedResult.stdout;
+}
 
 async function run() {
   try {
@@ -9,6 +33,8 @@ async function run() {
     const COMMITTER = core.getInput("COMMITTER");
     const COMMIT_MESSAGE = core.getInput("COMMIT_MESSAGE");
     const DESTINATION_FILE_PATH = core.getInput("DESTINATION_FILE_PATH");
+    const HEAD = core.getInput("HEAD");
+    const BASE = core.getInput("HEAD");
 
     const EnhancedOctokit = Octokit.plugin(createOrUpdateTextFile).defaults({
       userAgent: "Nx-Igus",
@@ -32,6 +58,14 @@ async function run() {
       message: `Updated ${DESTINATION_FILE_PATH}`,
       content: () => commitInfo,
     });
+
+    const allAffectedProjects = [
+      ...(await getAffectedProjects("libs"), HEAD, BASE),
+      ...(await getAffectedProjects("apps"), HEAD, BASE),
+    ];
+
+    console.log(allAffectedProjects);
+
     core.setOutput("commit-info", commitInfo);
   } catch (error) {
     if (error instanceof Error) {

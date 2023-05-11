@@ -14,6 +14,12 @@ inputs:
   COMMITTER:
     description: "Commit user"
     required: true
+  BASE:
+    required: false
+    description: "The base reference to be used for the affected evaluation."
+  HEAD:
+    required: false
+    description: "'The head reference to be used for the affected evaluation.'"
 runs:
   using: "node16"
   main: "dist/index.js"
