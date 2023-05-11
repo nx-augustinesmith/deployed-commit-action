@@ -13879,8 +13879,8 @@ function run() {
             });
             console.log(commitInfo);
             const allAffectedProjects = [
-                ...(yield getAffectedProjects("libs"), HEAD, BASE),
-                ...(yield getAffectedProjects("apps"), HEAD, BASE),
+                ...(yield getAffectedProjects("libs", HEAD, BASE)),
+                ...(yield getAffectedProjects("apps", HEAD, BASE)),
             ];
             yield octokit.createOrUpdateTextFile({
                 owner: COMMITTER,
