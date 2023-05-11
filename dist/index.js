@@ -13866,7 +13866,7 @@ function run() {
             const COMMIT_MESSAGE = core.getInput("COMMIT_MESSAGE");
             const DESTINATION_FILE_PATH = core.getInput("DESTINATION_FILE_PATH");
             const HEAD = core.getInput("HEAD");
-            const BASE = core.getInput("HEAD");
+            const BASE = core.getInput("BASE");
             const EnhancedOctokit = rest_1.Octokit.plugin(plugin_create_or_update_text_file_1.createOrUpdateTextFile).defaults({
                 userAgent: "Nx-Igus",
             });

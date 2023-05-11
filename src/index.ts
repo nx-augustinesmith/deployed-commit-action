@@ -36,7 +36,7 @@ async function run() {
     const COMMIT_MESSAGE = core.getInput("COMMIT_MESSAGE");
     const DESTINATION_FILE_PATH = core.getInput("DESTINATION_FILE_PATH");
     const HEAD = core.getInput("HEAD");
-    const BASE = core.getInput("HEAD");
+    const BASE = core.getInput("BASE");
 
     const EnhancedOctokit = Octokit.plugin(createOrUpdateTextFile).defaults({
       userAgent: "Nx-Igus",
