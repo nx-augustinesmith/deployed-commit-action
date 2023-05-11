@@ -24,6 +24,7 @@ async function getAffectedProjects(
     silent: true,
   });
   core.info(affectedResult.stdout);
+  core.info(affectedResult.stderr);
   return affectedResult.stdout;
 }
 
