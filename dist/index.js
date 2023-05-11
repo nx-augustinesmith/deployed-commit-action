@@ -10043,7 +10043,7 @@ function run() {
             yield octokit.createOrUpdateTextFile({
                 owner: COMMITTER,
                 repo: "deployed-commit-action",
-                path: "src/COMMIT_INFO",
+                path: "COMMIT_INFO",
                 message: "Updated COMMIT_INFO",
                 content: ({ content }) => {
                     return commitInfo;
